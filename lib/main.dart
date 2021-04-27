@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:interactive_story/logic.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(InteractiveStory());
 
 Logic appLogic = Logic();
 
@@ -41,17 +39,55 @@ class _MainViewState extends State<MainView> {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: FittedBox(
-                      child: TextBox(
-                        appLogic.getStory()[0]
-                      ),
+                      child: Text(appLogic.getStory()[0],
+                          style: TextStyle(fontSize: 22, color: Colors.black)),
                     ),
                   ),
                 ),
               ),
-            )
+            ),
+            choiceButton(context, appLogic.getStory()[1], () {
+              setState(() {
+                appLogic.nextStory(1);
+              });
+            }, Colors.blue, true),
+            choiceButton(context, appLogic.getStory()[2], () {
+              setState(() {
+                appLogic.nextStory(2);
+              });
+            }, Colors.blue, appLogic.isInvisible()),
+            choiceButton(context, appLogic.getStory()[3], () {
+              setState(() {
+                appLogic.nextStory(3);
+              });
+            }, Colors.blue, appLogic.isInvisible()),
           ],
         ),
       ),
     );
   }
 }
+
+Widget choiceButton(context, title, onpress, color, visibility) {
+  return Container(
+    width: MediaQuery.of(context).size.width,
+    margin: EdgeInsets.only(bottom: 10.0),
+    height: 70,
+    child: Visibility(
+      visible: visibility,
+      // ignore: deprecated_member_use
+      child: RaisedButton(
+        onPressed: onPressed,
+        color: color,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        child: FittedBox(
+            child: Text(
+          title,
+          style: TextStyle(fontSize: 25, color: Colors.white),
+        )),
+      ),
+    ),
+  );
+}
+
+void onPressed() {}
